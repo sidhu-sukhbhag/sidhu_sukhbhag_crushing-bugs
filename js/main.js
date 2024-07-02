@@ -4,7 +4,6 @@ console.log("Javascript is connected");
 const resetButton = document.querySelector("#resetBut")
 const theButtons = document.querySelectorAll("#buttonHolder img");
 const puzzleBoard = document.querySelector(".puzzle-board");
-const puzzlePieces = document.querySelectorAll(".puzzle-pieces img");
 const dropZones = document.querySelectorAll(".drop-zone");
 const puzzlePiecesDiv = document.querySelectorAll(".puzzle-pieces");
 let draggedPiece;
@@ -18,11 +17,9 @@ function changeBGImage(event) {
 
     resetPuzzlePieces();
 
-    puzzlePieces.forEach(piece => {
-        const pieceType = piece.getAttribute("data-piece");
-        piece.src = `./images/${pieceType}${puzzleId}.jpg`;
-        puzzlePiecesDiv.appendChild(piece);
-    });
+    document.querySelector(`#puzzle${puzzleId}`).style.display = "block";
+
+
 }
 
 function handleStartDrag() {
