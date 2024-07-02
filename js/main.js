@@ -8,6 +8,7 @@ const puzzlePieces = document.querySelectorAll(".puzzle-pieces img");
 const dropZones = document.querySelectorAll(".drop-zone");
 const puzzlePiecesDiv = document.querySelectorAll(".puzzle-pieces");
 let draggedPiece;
+let currentPuzzle = 0;
 
 //functions
 function changeBGImage(event) {
@@ -39,6 +40,7 @@ function handleDrop(e) {
     console.log("User dropped the piece");
 
     if(this.childNodes.length > 0){
+        console.log("Drop zone already occupied");
         return;
     }
 
@@ -46,12 +48,15 @@ function handleDrop(e) {
 }
 
 function resetPuzzlePieces(){
-    console.log("User clicked to reset the puzzle.");
-
-    puzzlePieces.forEach(piece => {
-        puzzlePiecesDiv.appendChild(piece);
+    const currentPuzzleDiv = document.querySelector(`#puzzle${currentPuzzle}`);
+    dropZones.forEach(zone =>{
+        if (zone.children.length > 0){
+            Array.from(zone.children).forEach(piece => {
+                currentPuzzleDiv.appendChild(piece);
+            });
+        };
     });
-}
+};
 //eventListeners
 theButtons.forEach(button => button.addEventListener("click", changeBGImage));
 
@@ -61,8 +66,16 @@ theButtons.forEach(function(img){
     });
 });
 
-puzzlePieces.forEach(piece => piece.addEventListener("dragstart", handleStartDrag));
+puzzlePiecesDiv.forEach(puzzleDiv => {
+    const pieces = puzzleDiv.querySelectorAll("img");
+    pieces.forEach(piece => piece.addEventListener("dragstart", handleStartDrag));
 
-dropZones.forEach(zone => zone.addEventListener("dragover", handleOver));
+});
+dropZones.forEach(zone => {
+    zone.addEventListener("dragover", handleOver);
+    zone.addEventListener("drop", handleDrop);
 
-dropZones.forEach(zone => zone.addEventListener("drop", handleDrop));
+});
+
+resetButton.addEventListener("click", resetPuzzlePieces);
+
